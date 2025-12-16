@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Password & Email Validation</title>
+
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+  <!-- Bootstrap -->
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
+
+  <!-- CSS for eye icon -->
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    i {
+      position: relative;
+      right: 40px;
+    }
+  </style>
+</head>
+<body class="p-3">
+
+  <!-- PASSWORD WITH TOGGLE -->
+  <h2>Password show / hide</h2>
+  <input type="password" id="passwordMain" autocomplete="off">
+  <button id="pwdbtn"
+          style="background:none; border:none; cursor:pointer; font-size:18px;">
+    <i class="fa-solid fa-eye"></i>
+  </button>
+
+  <hr>
+
+  <!-- PASSWORD VALIDATION -->
+  <h2>Password Validation</h2>
+
+  <label>Password:</label>
+  <input type="password" id="password" autocomplete="off">
+  <span id="pwdtext"></span>
+  <br><br>
+
+  <label>Confirm Password:</label>
+  <input type="password" id="confirmpassword">
+  <span id="confirmtext"></span>
+
+  <hr>
+
+  <!-- EMAIL VALIDATION -->
+  <h2>Email Validation</h2>
+
+  <input type="text" id="email" placeholder="Enter email" autocomplete="off">
+  <span id="emailtext"></span>
+
+  <script>
+    // show / hide main password
+    $("#pwdbtn").click(function (e) {
+      e.preventDefault();
+
+      let valtype = $("#passwordMain").attr("type");
+
+      if (valtype === "password") {
+        $("#passwordMain").attr("type", "text");
+        $("#pwdbtn i").removeClass("fa-eye").addClass("fa-eye-slash");
+      } else {
+        $("#passwordMain").attr("type", "password");
+        $("#pwdbtn i").removeClass("fa-eye-slash").addClass("fa-eye");
+      }
+    });
+
+    // password + confirm validation
+    $("#password, #confirmpassword").keyup(function () {
+
+      let pwddata  = $("#password").val();
+      let confdata = $("#confirmpassword").val();
+
+      // at least 8 chars, 1 lowercase, 1 uppercase, 1 digit
+      let pwdregex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+
+      if (pwdregex.test(pwddata)) {
+        $("#pwdtext").html("<font color='green'>password validated</font>");
+      } else {
+        $("#pwdtext").html("<font color='red'>password not validated</font>");
+      }
+
+      if (confdata.length > 0) {
+        if (pwddata === confdata) {
+          $("#confirmtext").html("<font color='green'>passwords match</font>");
+        } else {
+          $("#confirmtext").html("<font color='red'>passwords do not match</font>");
+        }
+      } else {
+        $("#confirmtext").html("");
+      }
+    });
+
+    // email validation
+    $("#email").keyup(function () {
+      let emaildata = $("#email").val();
+
+      let emailregex =
+        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+      if (emailregex.test(emaildata)) {
+        $("#emailtext").html("<font color='green'>validated</font>");
+      } else {
+        $("#emailtext").html("<font color='red'>not validated</font>");
+      }
+    });
+  </script>
+
+</body>
+</html>
